@@ -119,7 +119,10 @@ if (WIN32)
   set(GTEST_ROOT "C:/Xilinx/XRT/ext")
 endif()
 
-find_package(GTest)
+find_package(GTest 8.5)
+set(GTEST_INCLUDE_DIRS "/usr/lib")
+message (GTEST_INCLUDE_DIRS ${GTEST_INCLUDE_DIRS})
+message (CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (GTEST_FOUND)
   set(UNIT_TEST_NAME "xclbintest")

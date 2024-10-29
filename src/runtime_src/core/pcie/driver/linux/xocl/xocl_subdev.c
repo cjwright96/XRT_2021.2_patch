@@ -17,7 +17,7 @@
 #include <linux/platform_device.h>
 #include "xclfeatures.h"
 #include "xocl_drv.h"
-#include "version.h"
+#include "../../../../../../gen/version.h"
 
 /* TODO: remove this with old kds */
 extern int kds_mode;

@@ -218,36 +218,41 @@ if [[ ! -z ${XRT_BOOST_INSTALL:+x} ]]; then
     fi
     echo "Linking XRT binaries with static boost libraries"
 fi
-
+echo "checkpoint"
 # we pick microblaze toolchain from Vitis install
 if [[ -z ${XILINX_VITIS:+x} ]]; then
     export XILINX_VITIS=/proj/xbuilds/2019.2_released/installs/lin64/Vitis/2019.2
 fi
-
+echo "checkpoint6"
 if [[ $dbg == 1 ]]; then
   mkdir -p $debug_dir
   cd $debug_dir
 
+  echo "debug_dir"
+  echo $debug_dir
   cmake_flags+=" -DCMAKE_BUILD_TYPE=Debug"
 
   if [[ $nocmake == 0 ]]; then
 	echo "$CMAKE $cmake_flags ../../src"
 	time $CMAKE $cmake_flags ../../src
   fi
+  
+  cd ../../src #Chris added this to redirect it to the proper location where the makefiles are actually located.
+  echo "make -j $jcore $verbose DESTDIR=../build/$debug_dir install" #DESTDIR=$PWD is original setup
+  time make -j $jcore $verbose DESTDIR=../build/$debug_dir install
 
-  echo "make -j $jcore $verbose DESTDIR=$PWD install"
-  time make -j $jcore $verbose DESTDIR=$PWD install
 
   if [[ $noctest == 0 ]]; then
       time ctest --output-on-failure
   fi
   cd $BUILDDIR
 fi
-
+echo "checkpoint7"
 if [[ $opt == 1 ]]; then
   mkdir -p $release_dir
   cd $release_dir
-
+  echo "release_dir" 
+  echo $release_dir
   cmake_flags+=" -DCMAKE_BUILD_TYPE=Release"
 
   if [[ $nocmake == 0 ]]; then
@@ -255,9 +260,10 @@ if [[ $opt == 1 ]]; then
 	time $CMAKE $cmake_flags ../../src
   fi
 
+  cd ../../src #Chris added this to fix the no "no rule to make install" problem. Probably a bad idea but here we are.
   if [[ $nobuild == 0 ]]; then
-      echo "make -j $jcore $verbose DESTDIR=$PWD install"
-      time make -j $jcore $verbose DESTDIR=$PWD install
+      echo "make -j $jcore $verbose DESTDIR=../build/$release_dir install" #DESTDIR=$PWD was original setup
+      time make -j $jcore $verbose DESTDIR=../build/$release_dir install
 
       if [[ $noctest == 0 ]]; then
           time ctest --output-on-failure
@@ -287,7 +293,7 @@ if [[ $opt == 1 ]]; then
   fi
   cd $BUILDDIR
 fi
-
+echo "checkpoint8"
 # Verify compilation on edge
 if [[ $CPU != "aarch64" ]] && [[ $edge == 1 ]]; then
   mkdir -p $edge_dir
@@ -303,7 +309,7 @@ if [[ $CPU != "aarch64" ]] && [[ $edge == 1 ]]; then
   time make -j $jcore $verbose DESTDIR=$PWD
   cd $BUILDDIR
 fi
-
+echo "checkpoint9"
 
 if [[ $checkpatch == 1 ]]; then
     # check only driver released files

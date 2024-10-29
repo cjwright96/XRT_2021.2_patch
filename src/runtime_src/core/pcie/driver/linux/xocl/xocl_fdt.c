@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (C) 2018-2021 Xilinx, Inc. All rights reserved.
  *
  * Authors:
@@ -17,7 +17,7 @@
 #include <linux/platform_device.h>
 #include "xclfeatures.h"
 #include "xocl_drv.h"
-#include "version.h"
+#include "../../../../../../gen/version.h"
 #include "xocl_fdt.h"
 
 /* TODO: remove this with old kds */

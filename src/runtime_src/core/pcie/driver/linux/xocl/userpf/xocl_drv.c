@@ -26,7 +26,7 @@
 #include "../xocl_drv.h"
 #include "xocl_errors.h"
 #include "common.h"
-#include "version.h"
+#include "../../../../../../../gen/version.h"
 
 #ifndef PCI_EXT_CAP_ID_REBAR
 #define PCI_EXT_CAP_ID_REBAR 0x15
