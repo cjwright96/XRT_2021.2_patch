@@ -76,8 +76,8 @@ docs=0
 verbose=""
 driver=0
 checkpatch=0
-#jcore=$CORE
-jcore=1
+jcore=$CORE
+#jcore=1
 opt=1
 dbg=1
 edge=0
@@ -228,6 +228,7 @@ fi
 if [[ $dbg == 1 ]]; then
   mkdir -p $debug_dir
   cd $debug_dir
+  echo "Debug lib dir = $LD_LIBRARY_PATH"
 
   cmake_flags+=" -DCMAKE_BUILD_TYPE=Debug"
 
@@ -235,7 +236,6 @@ if [[ $dbg == 1 ]]; then
 	echo "$CMAKE $cmake_flags ../../src"
 	time $CMAKE $cmake_flags ../../src
   fi
-
   echo "make -j $jcore $verbose DESTDIR=$PWD install"
   time make -j $jcore $verbose DESTDIR=$PWD install
 
@@ -248,6 +248,7 @@ fi
 if [[ $opt == 1 ]]; then
   mkdir -p $release_dir
   cd $release_dir
+  echo "Release lib dir = $LD_LIBRARY_PATH"
 
   cmake_flags+=" -DCMAKE_BUILD_TYPE=Release"
 
@@ -257,6 +258,7 @@ if [[ $opt == 1 ]]; then
   fi
 
   if [[ $nobuild == 0 ]]; then
+      echo 
       echo "make -j $jcore $verbose DESTDIR=$PWD install"
       time make -j $jcore $verbose DESTDIR=$PWD install
 
